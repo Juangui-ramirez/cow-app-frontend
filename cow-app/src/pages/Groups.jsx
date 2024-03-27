@@ -1,10 +1,22 @@
 import { GroupCard } from "../components/GroupCard";
+import { useState } from "react";
+import Modal from "../components/Modal";
 
 export function Groups() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <section className="p-8">
       <div className="flex justify-end">
-        <button className="bg-[#36190D] text-white font-medium rounded-md h-[30px] w-[120px] ">
+        <button className="bg-[#36190D] text-white font-medium rounded-md h-[30px] w-[120px]" onClick={openModal}>
           New Group
         </button>
       </div>
@@ -14,10 +26,11 @@ export function Groups() {
       </div>
 
       <div className="grid grid-cols-1 gap-3">
-      <GroupCard />
-      <GroupCard />
-      <GroupCard />
+        <GroupCard />
+        
       </div>
+
+      <Modal isOpen={isModalOpen} closeModal={closeModal} />
     </section>
   );
 }
