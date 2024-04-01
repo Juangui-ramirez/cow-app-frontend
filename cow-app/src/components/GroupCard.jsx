@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Logo from "../assets/Logo.svg";
 
 export function GroupCard() {
@@ -9,6 +9,28 @@ export function GroupCard() {
     return randomColor();
   });
 
+  const [groups, setGroups] = useState([])
+
+  useEffect(() => {
+    const groups = fetch("http://localhost:3000/groups")
+    groups.then(
+      (res) => 
+      res.json().then((data) => {
+        setGroups(data)
+      }),
+      (err) => {
+        console.info("request error", err);
+      }
+    )
+  },[]);
+
+  const groupName = groups.name
+  console.log(groups)
+
+  {
+    groups.map(group => (<div key={group.name}>{group.name}</div>))
+  }
+
   return (
     <div className="flex gap-5 border-b-2 shadow-xl pl-3 mb-4">
       <img
@@ -18,7 +40,7 @@ export function GroupCard() {
         style={{ backgroundColor: bgColor }}
       />
       <div className="flex flex-col justify-between mb-4">
-        <h2 className="font-bold">Grupo #1</h2>
+        <h2 className="font-bold">{groupName}</h2>
         <p className="font-bold">
           You owe: <span className="text-red-600">$12.000</span>
         </p>
