@@ -5,7 +5,7 @@ import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 
 export const Header = () => {
   return (
-    <header className="bg-[#36190D]">
+    <header className="bg-brownppal sticky top-0 z-5">
       <div className="w-full flex justify-between p-4">
         <Link to="/">
           <div className="flex items-center">

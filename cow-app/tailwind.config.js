@@ -5,6 +5,9 @@ export default {
     extend: {
       fontFamily:{
         sans: ['Fredoka', 'sans-serif'],
+      },
+      colors:{
+        'brownppal': '#36190D'
       }
     },
   },
