@@ -1,9 +1,10 @@
 import { GroupCard } from "../components/GroupCard";
-import { useState } from "react";
-import Modal from "../components/Modal";
+import { useState, useEffect } from "react";
+import { Modal } from "../components/Modal";
 
 export function Groups() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [groups, setGroups] = useState([]);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -11,12 +12,33 @@ export function Groups() {
 
   const closeModal = () => {
     setIsModalOpen(false);
+    fetchData();
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/groups");
+      if (!response.ok) {
+        throw new Error("Failed to fetch groups");
+      }
+      const data = await response.json();
+      setGroups(data);
+    } catch (error) {
+      console.error("Error fetching groups:", error);
+    }
   };
 
   return (
     <section className="p-8">
       <div className="flex justify-end">
-        <button className="bg-[#36190D] text-white font-medium rounded-md h-[30px] w-[120px]" onClick={openModal}>
+        <button
+          className="bg-brownppal text-white font-medium rounded-md h-[30px] w-[120px]"
+          onClick={openModal}
+        >
           New Group
         </button>
       </div>
@@ -26,8 +48,7 @@ export function Groups() {
       </div>
 
       <div className="grid grid-cols-1 gap-3">
-        <GroupCard />
-        
+        <GroupCard data={groups.sort((a,b) => a.name.localeCompare(b.name))} />
       </div>
 
       <Modal isOpen={isModalOpen} closeModal={closeModal} />
