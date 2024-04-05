@@ -21,7 +21,7 @@ export function Groups() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("http://localhost:3000/groups");
+      const response = await fetch("http://localhost:3000/groups?sort=asc");
       if (!response.ok) {
         throw new Error("Failed to fetch groups");
       }
@@ -48,7 +48,16 @@ export function Groups() {
       </div>
 
       <div className="grid grid-cols-1 gap-3">
-        <GroupCard data={groups.sort((a,b) => a.name.localeCompare(b.name))} />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {groups.map((group) => (
+            <div
+              key={group.name}
+              className="flex gap-5 border-b-2 shadow-xl pl-3 mb-4"
+            >
+              <GroupCard key={group.name} data={group} />{" "}
+            </div>
+          ))}
+        </div>
       </div>
 
       <Modal isOpen={isModalOpen} closeModal={closeModal} />
