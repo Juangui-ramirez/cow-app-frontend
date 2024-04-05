@@ -9,7 +9,7 @@ export default {
       colors:{
         'brownppal': '#36190D',
         'amarello' : '#FFA72F',
-        'brownsec'  : '582B1C',
+        'brownsec'  : '#582B1C',
         'rederror' :  '#FF2530',
         'greensucess' : '#66B04C'
       }
