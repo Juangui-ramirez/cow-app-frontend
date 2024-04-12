@@ -37,7 +37,7 @@ export function Login() {
   };
 
   return (
-    <section className="w-full">
+    <section className="min-h-[75vh]">
       <Link to="/home">
         <div className="flex justify-center mt-14">
           <img src={LogoLogin} alt="Logo Cow login" className="" />

@@ -25,10 +25,10 @@ export const GroupDetails = () => {
   }, [groupName]);
 
   return (
-    <div>
+    <section className="min-h-[75vh]">
       <div className="grid grid-cols-1 gap-3">
         <GroupCardDetail data={group} />
       </div>
-    </div>
+    </section>
   );
 };

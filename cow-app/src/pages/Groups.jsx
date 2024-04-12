@@ -33,7 +33,7 @@ export function Groups() {
   };
 
   return (
-    <section className="p-8">
+    <section className="min-h-[75vh] p-4">
       <div className="flex justify-end">
         <button
           className="bg-brownppal text-white font-medium rounded-md h-[30px] w-[120px]"
@@ -54,7 +54,7 @@ export function Groups() {
               key={group.name}
               className="flex gap-5 border-b-2 shadow-xl pl-3 mb-4"
             >
-              <GroupCard key={group.name} data={group} />{" "}
+              <GroupCard data={group} />{" "}
             </div>
           ))}
         </div>
