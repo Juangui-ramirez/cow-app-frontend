@@ -15,10 +15,6 @@ export function Groups() {
     fetchData();
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   const fetchData = async () => {
     try {
       const response = await fetch("http://localhost:3000/groups?sort=asc");
@@ -32,17 +28,36 @@ export function Groups() {
     }
   };
 
+  const handleDelete = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:3000/groups/${id}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error("Failed to delete group");
+      }
+      fetchData();
+    } catch (error) {
+      console.error("Error deleting group:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+
   return (
     <section className="min-h-[75vh] p-4">
       <div className="flex justify-end">
         <button
-          className="bg-brownppal text-white font-medium rounded-md h-[30px] w-[120px]"
+          className="bg-brownppal text-white font-medium rounded-md h-[2em] w-[8em]"
           onClick={openModal}
         >
           New Group
         </button>
       </div>
-      <div className="pb-8">
+      <div className="pb-8 m-4">
         <h2 className="font-bold">You owe</h2>
         <p className="text-red-600 font-bold text-2xl">$45.000</p>
       </div>
@@ -54,7 +69,7 @@ export function Groups() {
               key={group.name}
               className="flex gap-5 border-b-2 shadow-xl pl-3 mb-4"
             >
-              <GroupCard data={group} />{" "}
+              <GroupCard data={group} onDelete={() => handleDelete(group.id)} />{" "}
             </div>
           ))}
         </div>
