@@ -26,6 +26,8 @@ export const GroupCardDetail = ({ data }) => {
           </button>
         </div>
       </div>
+       <h1 className="m-4 text-2xl text-amarello">Gastos</h1>
+       <p className="ml-6">{data.createdAt}</p>
     </>
   );
 };
@@ -34,5 +36,6 @@ GroupCardDetail.propTypes = {
   data: PropTypes.shape({
     name: PropTypes.string.isRequired,
     color: PropTypes.string.isRequired,
+    createdAt:PropTypes.string.isRequired
   }).isRequired,
 };

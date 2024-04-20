@@ -45,9 +45,7 @@ export const Modal = ({ isOpen, closeModal }) => {
         throw new Error("Failed to create group (Name in use)");
       }
 
-      const newGroup = await response.json();
       handleCloseModal();
-      console.log("New group created:", newGroup);
     } catch (error) {
       setError(error.message);
     }
@@ -68,9 +66,7 @@ export const Modal = ({ isOpen, closeModal }) => {
 
   return (
     <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-700 bg-opacity-50">
-      <div
-        className=" bg-white p-8 rounded max-w-[25em] w-full mx-6 "
-      >
+      <div className=" bg-white p-8 rounded max-w-[25em] w-full mx-6 ">
         <div className="flex justify-end items-end">
           <button className=" text-black font-bold" onClick={handleCloseModal}>
             X
