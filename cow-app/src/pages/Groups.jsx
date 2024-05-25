@@ -17,7 +17,7 @@ export function Groups() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("http://localhost:3000/groups?sort=asc");
+      const response = await fetch(`${import.meta.env.APIURL}/groups?sort=asc`);
       if (!response.ok) {
         throw new Error("Failed to fetch groups");
       }
@@ -30,7 +30,7 @@ export function Groups() {
 
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3000/groups/${id}`, {
+      const response = await fetch(`{import.meta.env.APIURL}/groups/${id}`, {
         method: "DELETE",
       });
       if (!response.ok) {
