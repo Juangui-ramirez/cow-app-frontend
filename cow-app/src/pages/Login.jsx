@@ -1,10 +1,12 @@
 import { useState } from "react";
 import LogoLogin from "../assets/Logo-login.svg";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 export function Login() {
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -14,16 +16,17 @@ export function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3000/login", {
+      const response = await fetch("http://localhost:3000/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ email, password }),
       });
       const data = await response.json();
       if (response.ok) {
-        setMessage("Login successful");
+        sessionStorage.setItem("token", data.token);
+        navigate("/home")
       } else {
         setMessage(data.message);
       }
@@ -87,12 +90,18 @@ export function Login() {
               className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500"
               onClick={toggleShowPassword}
             >
-              {showPassword ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash}/>}
+              {showPassword ? (
+                <FontAwesomeIcon icon={faEye} />
+              ) : (
+                <FontAwesomeIcon icon={faEyeSlash} />
+              )}
             </button>
           </div>
-          
+
           {message && (
-            <p className="text-rederror font-semibold text-center mt-2">{message}</p>
+            <p className="text-rederror font-semibold text-center mt-2">
+              {message}
+            </p>
           )}
           <button
             className="bg-brownppal hover:bg-brownsec text-white font-semibold py-2 px-4 rounded"

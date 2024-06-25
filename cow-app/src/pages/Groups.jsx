@@ -17,7 +17,11 @@ export function Groups() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`${import.meta.env.APIURL}/groups?sort=asc`);
+      const response = await fetch(`http://localhost:3000/groups?sort=desc`, {
+        headers: {
+          authorization: `bearer ${sessionStorage.getItem("token")}`,
+      }
+      });
       if (!response.ok) {
         throw new Error("Failed to fetch groups");
       }
