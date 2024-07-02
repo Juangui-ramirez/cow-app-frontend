@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import PropTypes from "prop-types";
-import { Header } from "./components/Header";
+import HeaderAndFooter from "./hooks/HeaderAndFooter";
 import { Footer } from "./components/Footer";
 import { Home } from "./pages/Home";
 import { Groups } from "./pages/Groups";
@@ -8,6 +7,7 @@ import { Bills } from "./pages/Bills";
 import { Friends } from "./pages/Friends";
 import { GroupDetails } from "./pages/GroupDetails";
 import { Login } from "./pages/Login";
+import { Register } from "./pages/Register";
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route
-            path="/"
+            path="/login"
             element={
               <>
                 <Login /> <Footer />
@@ -23,43 +23,51 @@ function App() {
             }
           />
           <Route
+            path="/register"
+            element={
+              <>
+                <Register /> <Footer />
+              </>
+            }
+          />
+          <Route
             path="/home"
             element={
-              <HandF>
+              <HeaderAndFooter>
                 <Home />
-              </HandF>
+              </HeaderAndFooter>
             }
           />
           <Route
             path="/friends"
             element={
-              <HandF>
+              <HeaderAndFooter>
                 <Friends />
-              </HandF>
+              </HeaderAndFooter>
             }
           />
           <Route
             path="/bills"
             element={
-              <HandF>
+              <HeaderAndFooter>
                 <Bills />
-              </HandF>
+              </HeaderAndFooter>
             }
           />
           <Route
             path="/groups"
             element={
-              <HandF>
+              <HeaderAndFooter>
                 <Groups />
-              </HandF>
+              </HeaderAndFooter>
             }
           />
           <Route
             path="/groups/:groupName"
             element={
-              <HandF>
+              <HeaderAndFooter>
                 <GroupDetails />
-              </HandF>
+              </HeaderAndFooter>
             }
           />
         </Routes>
@@ -67,19 +75,5 @@ function App() {
     </>
   );
 }
-
-function HandF({ children }) {
-  return (
-    <>
-      <Header />
-      {children}
-      <Footer />
-    </>
-  );
-}
-
-HandF.propTypes = {
-  children: PropTypes.node.isRequired,
-};
 
 export default App;

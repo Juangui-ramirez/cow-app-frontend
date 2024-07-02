@@ -4,27 +4,27 @@ import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
-export function Login() {
+export function Register() {
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [message, setMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleLogin = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3000/auth/login", {
+      const response = await fetch("http://localhost:3000/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ name, email, password }),
       });
       const data = await response.json();
       if (response.ok) {
-        sessionStorage.setItem("token", data.token);
-        navigate("/home");
+        navigate("/login");
       } else {
         setMessage(data.message);
       }
@@ -33,28 +33,41 @@ export function Login() {
     }
   };
 
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
   const clearMessage = () => {
     setMessage("");
   };
 
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <section className="min-h-[75vh]">
-      <div className="flex justify-center mt-14">
-        <img src={LogoLogin} alt="Logo Cow login" className="" />
-      </div>
+      <Link to="/home">
+        <div className="flex justify-center mt-14">
+          <img src={LogoLogin} alt="Logo Cow login" className="" />
+        </div>
+      </Link>
 
       <h1 className="text-2xl text-center mt-7 font-bold text-brownsec">
-        Login
+        Register
       </h1>
       <div className="flex justify-center">
         <form
-          onSubmit={handleLogin}
+          onSubmit={handleRegister}
           className="flex flex-col gap-5 mt-8 min-w-[18em]"
         >
+          <input
+            className="border rounded font-semibold text-brownsec py-2 px-3"
+            id="name"
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Name"
+            required
+            onFocus={clearMessage}
+          />
+
           <input
             className="border rounded font-semibold text-brownsec py-2 px-3"
             id="email"
@@ -99,13 +112,13 @@ export function Login() {
             className="bg-brownppal hover:bg-brownsec text-white font-semibold py-2 px-4 rounded"
             type="submit"
           >
-            Login
+            Sign In
           </button>
           <Link
-            to="/register"
-            className="bg-brownppal text-center hover:bg-brownsec text-white font-semibold py-2 px-4 rounded"
+            to="/login"
+            className="text-center bg-brownppal hover:bg-brownsec text-white font-semibold py-2 px-4 rounded"
           >
-            Register
+            Log In
           </Link>
         </form>
       </div>
