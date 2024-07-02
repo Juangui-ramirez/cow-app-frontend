@@ -24,7 +24,7 @@ export function Register() {
       });
       const data = await response.json();
       if (response.ok) {
-        navigate("/login");
+        navigate("/");
       } else {
         setMessage(data.message);
       }
@@ -115,7 +115,7 @@ export function Register() {
             Sign In
           </button>
           <Link
-            to="/login"
+            to="/"
             className="text-center bg-brownppal hover:bg-brownsec text-white font-semibold py-2 px-4 rounded"
           >
             Log In

@@ -34,7 +34,7 @@ export const Header = () => {
         {!isMobile && (
           <Nav className="hidden sm:flex" />
         )}
-        <Link to="/login">
+        <Link to="/">
           <div className="flex">
             <FontAwesomeIcon
               icon={faUserCircle}
