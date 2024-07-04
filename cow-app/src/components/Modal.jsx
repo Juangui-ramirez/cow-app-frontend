@@ -33,16 +33,20 @@ export const Modal = ({ isOpen, closeModal }) => {
         setSelectedColor(colorToUse);
       }
 
+      const token = sessionStorage.getItem("token");
+
+
       const response = await fetch("http://localhost:3000/groups", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
+          authorization: `bearer ${token}`,
         },
         body: JSON.stringify({ name: groupName, color: colorToUse }),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to create group (Name in use)");
+        throw new Error("Failed to create group");
       }
 
       handleCloseModal();
