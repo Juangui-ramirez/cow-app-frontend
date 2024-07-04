@@ -34,7 +34,7 @@ export function Groups() {
 
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`{import.meta.env.APIURL}/groups/${id}`, {
+      const response = await fetch(`http://localhost:3000/groups/${id}`, {
         method: "DELETE",
       });
       if (!response.ok) {

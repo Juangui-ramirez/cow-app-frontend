@@ -15,7 +15,7 @@ export function Register() {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3000/auth/register", {
+      const response = await fetch("http://localhost:3000/users", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -29,7 +29,7 @@ export function Register() {
         setMessage(data.message);
       }
     } catch (error) {
-      setMessage("Error to connect database");
+      setMessage("Error connecting to database");
     }
   };
 
