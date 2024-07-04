@@ -8,28 +8,38 @@ import { Friends } from "./pages/Friends";
 import { GroupDetails } from "./pages/GroupDetails";
 import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
+import { Unauthorized } from "./pages/Unauthorized";
+import { PrivateRoute } from "./components/PrivateRoute";
 
 function App() {
   return (
-    <>
-      <BrowserRouter>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <>
-                <Login /> <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/register"
-            element={
-              <>
-                <Register /> <Footer />
-              </>
-            }
-          />
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <Login /> <Footer />
+            </>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <>
+              <Register /> <Footer />
+            </>
+          }
+        />
+        <Route
+          path="/unauthorized"
+          element={
+            <>
+              <Unauthorized />
+            </>
+          }
+        />
+        <Route element={<PrivateRoute />}>
           <Route
             path="/home"
             element={
@@ -70,9 +80,9 @@ function App() {
               </HeaderAndFooter>
             }
           />
-        </Routes>
-      </BrowserRouter>
-    </>
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
