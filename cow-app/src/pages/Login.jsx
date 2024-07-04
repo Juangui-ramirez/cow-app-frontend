@@ -24,6 +24,7 @@ export function Login() {
       const data = await response.json();
       if (response.ok) {
         sessionStorage.setItem("token", data.token);
+        sessionStorage.setItem("userId", data.userId);
         navigate("/home");
       } else {
         setMessage(data.message);
@@ -32,6 +33,8 @@ export function Login() {
       setMessage("Error to connect database");
     }
   };
+  
+  
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);

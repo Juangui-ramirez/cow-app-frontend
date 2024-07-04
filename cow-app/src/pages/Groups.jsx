@@ -17,18 +17,24 @@ export function Groups() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/groups?sort=desc`, {
+      const userId = sessionStorage.getItem("userId");
+      const token = sessionStorage.getItem("token");
+  
+      const response = await fetch(`http://localhost:3000/groups?sort=desc&userId=${userId}`, {
         headers: {
-          authorization: `bearer ${sessionStorage.getItem("token")}`,
-      }
+          Authorization: `Bearer ${token}`, // Asegúrate de usar 'Bearer' antes del token
+        },
       });
+  
       if (!response.ok) {
         throw new Error("Failed to fetch groups");
       }
+  
       const data = await response.json();
-      setGroups(data);
+      setGroups(data); // Actualiza el estado con los grupos recibidos del servidor
     } catch (error) {
       console.error("Error fetching groups:", error);
+      // Manejo de errores: muestra un mensaje de error o realiza otra acción apropiada
     }
   };
 
