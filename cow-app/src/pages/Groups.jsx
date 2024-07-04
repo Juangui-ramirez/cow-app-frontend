@@ -35,6 +35,9 @@ export function Groups() {
   const handleDelete = async (id) => {
     try {
       const response = await fetch(`http://localhost:3000/groups/${id}`, {
+        headers: {
+          authorization: `bearer ${sessionStorage.getItem("token")}`,
+      },
         method: "DELETE",
       });
       if (!response.ok) {
