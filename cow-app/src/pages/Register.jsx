@@ -24,7 +24,9 @@ export function Register() {
       });
       const data = await response.json();
       if (response.ok) {
-        navigate("/");
+        sessionStorage.setItem("token", data.token);
+        sessionStorage.setItem("userId", data.newUser.id);
+        navigate("/home");
       } else {
         setMessage(data.message);
       }
