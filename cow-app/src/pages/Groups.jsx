@@ -19,22 +19,24 @@ export function Groups() {
     try {
       const userId = sessionStorage.getItem("userId");
       const token = sessionStorage.getItem("token");
-  
-      const response = await fetch(`http://localhost:3000/groups?sort=desc&userId=${userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`, // Asegúrate de usar 'Bearer' antes del token
-        },
-      });
-  
+
+      const response = await fetch(
+        `http://localhost:3000/groups?sort=desc&userId=${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
       if (!response.ok) {
         throw new Error("Failed to fetch groups");
       }
-  
+
       const data = await response.json();
-      setGroups(data); // Actualiza el estado con los grupos recibidos del servidor
+      setGroups(data);
     } catch (error) {
       console.error("Error fetching groups:", error);
-      // Manejo de errores: muestra un mensaje de error o realiza otra acción apropiada
     }
   };
 
@@ -43,7 +45,7 @@ export function Groups() {
       const response = await fetch(`http://localhost:3000/groups/${id}`, {
         headers: {
           authorization: `bearer ${sessionStorage.getItem("token")}`,
-      },
+        },
         method: "DELETE",
       });
       if (!response.ok) {
@@ -59,7 +61,6 @@ export function Groups() {
     fetchData();
   }, []);
 
-
   return (
     <section className="min-h-[75vh] p-4">
       <div className="flex justify-end">
@@ -71,24 +72,26 @@ export function Groups() {
         </button>
       </div>
       <div className="pb-8 m-4">
-        <h2 className="font-bold">You owe</h2>
-        <p className="text-red-600 font-bold text-2xl">$45.000</p>
+        <h1 className="font-bold text-2xl">You owe</h1>
+        <p className="text-red-600 font-bold text-4xl">$45.000</p>
       </div>
 
-      <div className="grid grid-cols-1 gap-3">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {groups.map((group) => (
-            <div
-              key={group.name}
-              className="flex gap-5 border-b-2 shadow-xl pl-3 mb-4"
-            >
-              <GroupCard data={group} onDelete={() => handleDelete(group.id)} />{" "}
-            </div>
-          ))}
-        </div>
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {groups.map((group) => (
+          <div
+            key={group.name}
+            className="flex justify-center "
+          >
+            <GroupCard
+              data={group}
+              onDelete={() => handleDelete(group.id)}
+            />
+          </div>
+        ))}
       </div>
 
       <Modal isOpen={isModalOpen} closeModal={closeModal} />
     </section>
   );
 }
+

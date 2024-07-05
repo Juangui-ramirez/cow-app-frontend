@@ -9,28 +9,29 @@ export const GroupCard = ({ data, onDelete }) => {
   };
 
   return (
-    <>
+    <div className="flex gap-3 border-b-2 shadow-xl p-3">
       <img
         src={Logo}
         alt=""
-        className="p-2 rounded-md w-[70px] mb-4"
+        className="p-2 rounded-md w-[80px] mb-4"
         style={{ backgroundColor: data.color }}
       />
       <div className="flex flex-col justify-between mb-4">
         <h2 className="font-bold">{data.name}</h2>
         <p className="font-bold mb-2">
-          You owe: <span className="text-red-600">$12.000</span>
+          Total owe: <span className="text-red-600">$12.000</span>
         </p>
         <div className="flex gap-2">
           <Link to={`/groups/${data.id}`}>
-           <Button text="Edit" />
+            <Button text="Edit" />
           </Link>
-         <Button text="Delete" onClick={handleDelete} />
+          <Button text="Delete" onClick={handleDelete} />
         </div>
       </div>
-    </>
+    </div>
   );
 };
+
 
 GroupCard.propTypes = {
   data: PropTypes.arrayOf(

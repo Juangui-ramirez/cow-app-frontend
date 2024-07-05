@@ -14,6 +14,20 @@ export default {
         'greensucess' : '#66B04C'
       }
     },
+    
+    screens: {
+      'sm': '600px',
+      // => @media (min-width: 600px) { ... }
+
+      'md': '769px',
+      // => @media (min-width: 769px) { ... }
+
+      'lg': '900px',
+      // => @media (min-width: 900px) { ... }
+
+      'xl': '1200px',
+      // => @media (min-width: 1400px) { ... }
+    },
   },
   plugins: [],
 };
