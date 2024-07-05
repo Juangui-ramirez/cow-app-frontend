@@ -82,7 +82,7 @@ export function Login() {
             />
             <button
               type="button"
-              className="absolute right-2 text-gray-500"
+              className="absolute right-2 text-amarello"
               onClick={toggleShowPassword}
             >
               {showPassword ? (
