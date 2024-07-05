@@ -46,7 +46,7 @@ export const Modal = ({ isOpen, closeModal }) => {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to create group");
+        throw new Error("Name in use");
       }
 
       handleCloseModal();
@@ -113,7 +113,7 @@ export const Modal = ({ isOpen, closeModal }) => {
         >
           Create Group
         </button>
-        {error && <p className="text-red-500">{error}</p>}
+        {error && <p className="text-red-500 font-bold text-lg">{error}</p>}
       </div>
     </div>
   );

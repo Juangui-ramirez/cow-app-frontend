@@ -1,6 +1,6 @@
 import { useState } from "react";
 import LogoLogin from "../assets/Logo-login.svg";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
@@ -42,12 +42,10 @@ export function Register() {
   };
 
   return (
-    <section className="min-h-[75vh]">
-      <Link to="/home">
-        <div className="flex justify-center mt-14">
-          <img src={LogoLogin} alt="Logo Cow login" className="" />
-        </div>
-      </Link>
+    <section className="min-h-[75vh] flex flex-col justify-center">
+      <div className="flex justify-center">
+        <img src={LogoLogin} alt="Logo Cow login" className="" />
+      </div>
 
       <h1 className="text-2xl text-center mt-7 font-bold text-brownsec">
         Register
@@ -92,7 +90,7 @@ export function Register() {
             />
             <button
               type="button"
-              className="absolute right-2 text-gray-500"
+              className="absolute right-2 text-amarello"
               onClick={toggleShowPassword}
             >
               {showPassword ? (
@@ -114,12 +112,6 @@ export function Register() {
           >
             Sign In
           </button>
-          <Link
-            to="/"
-            className="text-center bg-brownppal hover:bg-brownsec text-white font-semibold py-2 px-4 rounded"
-          >
-            Log In
-          </Link>
         </form>
       </div>
     </section>
