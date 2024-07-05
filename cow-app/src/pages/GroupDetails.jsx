@@ -8,15 +8,22 @@ export const GroupDetails = () => {
 
   const fetchData = async (groupName) => {
     try {
+      const token = sessionStorage.getItem("token"); // Obtén el token de sessionStorage
       const encodedGroupName = encodeURIComponent(groupName);
-      const response = await fetch(`http://localhost:3000/groups/${encodedGroupName}`);
+      const response = await fetch(`http://localhost:3000/groups/${encodedGroupName}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
       if (!response.ok) {
-        throw new Error("Failed to fetch groups");
+        throw new Error("Failed to fetch group details");
       }
+
       const data = await response.json();
       setGroup(data);
     } catch (error) {
-      console.error("Error fetching groups:", error);
+      console.error("Error fetching group details:", error);
     }
   };
 

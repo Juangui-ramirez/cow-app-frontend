@@ -2,11 +2,25 @@ import PropTypes from "prop-types";
 import Logo from "../assets/Logo.svg";
 
 export const GroupCardDetail = ({ data }) => {
+  const { name, color, createdat } = data;
+  const date = new Date(createdat);
+  const formattedDate = date.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+
   return (
     <>
-      <div className="flex justify-around m-6 ">
-        <button className="bg-brownppal text-white font-semibold w-[33%] h-8 rounded-md">New Bill</button>
-        <button className="bg-brownppal text-white font-semibold w-[33%] h-8 rounded-md">New Friend</button>
+      <div className="flex justify-center m-6">
+        <div className="flex justify-between max-w-md w-full">
+          <button className="bg-brownppal text-white font-semibold w-32 h-8 rounded-md">
+            New Bill
+          </button>
+          <button className="bg-brownppal text-white font-semibold w-32 h-8 rounded-md">
+            New Friend
+          </button>
+        </div>
       </div>
 
       <div className="flex m-4 gap-6 h-full max-h-28">
@@ -14,10 +28,10 @@ export const GroupCardDetail = ({ data }) => {
           src={Logo}
           alt=""
           className=" max-w-24  p-2 rounded-lg "
-          style={{ backgroundColor: data.color }}
+          style={{ backgroundColor: color }}
         />
         <div className="flex flex-col justify-between w-full ">
-          <h1 className="text-2xl font-bold">{data.name}</h1>
+          <h1 className="text-2xl font-bold">{name}</h1>
           <p className="text-black font-bold">
             Your Total Owe: <span className="text-red-600">$12.000</span>
           </p>
@@ -26,8 +40,11 @@ export const GroupCardDetail = ({ data }) => {
           </button>
         </div>
       </div>
-       <h1 className="m-4 text-2xl text-amarello">Gastos</h1>
-       <p className="ml-6">{data.createdAt}</p>
+
+      <h1 className="m-4 text-2xl font-bold text-amarello">
+        Friends and Bills
+      </h1>
+      <p className="ml-6">{formattedDate}</p>
     </>
   );
 };
@@ -36,6 +53,6 @@ GroupCardDetail.propTypes = {
   data: PropTypes.shape({
     name: PropTypes.string.isRequired,
     color: PropTypes.string.isRequired,
-    createdAt:PropTypes.string.isRequired
+    createdat: PropTypes.string.isRequired,
   }).isRequired,
 };

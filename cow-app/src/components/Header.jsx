@@ -50,9 +50,9 @@ export const Header = () => {
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           />
           {isDropdownOpen && (
-            <div className="absolute right-0 mt-8 w-48 bg-white rounded-md shadow-lg">
+            <div className="absolute right-0 mt-12 w-48 bg-white rounded-md shadow-lg">
               <button
-                className="w-full px-4 py-2 text-left text-black hover:bg-gray-200"
+                className="w-full px-4 py-2 text-left text-black font-bold hover:bg-amarello  rounded-md"
                 onClick={handleLogout}
               >
                 Logout
