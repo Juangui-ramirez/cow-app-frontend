@@ -35,7 +35,7 @@ function App() {
           path="/unauthorized"
           element={
             <>
-              <Unauthorized />
+              <Unauthorized /> <Footer />
             </>
           }
         />
