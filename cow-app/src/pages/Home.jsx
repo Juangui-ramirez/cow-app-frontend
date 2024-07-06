@@ -1,4 +1,4 @@
-function Home() {
+export function Home() {
   return (
     <section className="min-h-[70vh] flex flex-col items-center justify-center p-4">
       <h1 className="text-4xl font-bold text-center text-amarello mb-8">Welcome to the COW Expense App!</h1>
@@ -13,4 +13,3 @@ function Home() {
   );
 }
 
-export default Home;
