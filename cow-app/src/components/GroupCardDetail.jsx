@@ -12,13 +12,16 @@ export const GroupCardDetail = ({ data }) => {
 
   return (
     <>
-      <div className="flex justify-center m-6">
-        <div className="flex justify-between max-w-md w-full">
-          <button className="bg-brownppal text-white font-semibold w-32 h-8 rounded-md">
+      <div className="flex m-6">
+        <div className="flex justify-between gap-4 w-full">
+          <button className="bg-brownppal text-white font-semibold w-28 h-8 rounded-md">
             New Bill
           </button>
-          <button className="bg-brownppal text-white font-semibold w-32 h-8 rounded-md">
+          <button className="bg-brownppal text-white font-semibold w-28 h-8 rounded-md">
             New Friend
+          </button>
+          <button className="bg-brownppal text-white font-semibold w-28 h-8 rounded-md">
+            Edit Group
           </button>
         </div>
       </div>
