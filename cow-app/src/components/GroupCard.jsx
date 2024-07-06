@@ -23,9 +23,9 @@ export const GroupCard = ({ data, onDelete }) => {
         </p>
         <div className="flex gap-2">
           <Link to={`/groups/${data.id}`}>
-            <Button text="Edit" />
+            <Button text="See" />
           </Link>
-          <Button text="Delete" onClick={handleDelete} />
+          <Button text="Leave" onClick={handleDelete} />
         </div>
       </div>
     </div>
