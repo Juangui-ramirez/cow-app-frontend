@@ -2,12 +2,16 @@ import { GroupCard } from "../components/GroupCard";
 import { useState, useEffect } from "react";
 import { Modal } from "../components/Modal";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export function Groups() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [groups, setGroups] = useState([]);
+  const [editingGroup, setEditingGroup] = useState(null);
 
   const openModal = () => {
     setIsModalOpen(true);
+    setEditingGroup(null); // Clear editing state
   };
 
   const closeModal = () => {
@@ -21,7 +25,7 @@ export function Groups() {
       const token = sessionStorage.getItem("token");
 
       const response = await fetch(
-        `http://localhost:3000/groups?sort=desc&userId=${userId}`,
+        `${API_URL}groups?sort=desc&userId=${userId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -42,9 +46,9 @@ export function Groups() {
 
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3000/groups/${id}`, {
+      const response = await fetch(`${API_URL}groups/${id}`, {
         headers: {
-          authorization: `bearer ${sessionStorage.getItem("token")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
         },
         method: "DELETE",
       });
@@ -54,6 +58,52 @@ export function Groups() {
       fetchData();
     } catch (error) {
       console.error("Error deleting group:", error);
+    }
+  };
+
+  const handleSaveGroup = async (name, color) => {
+    try {
+      const token = sessionStorage.getItem("token");
+      const response = await fetch("http://localhost:3000/groups", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ name, color }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Name in use");
+      }
+
+      fetchData();
+      closeModal();
+    } catch (error) {
+      console.error("Failed to create group:", error);
+    }
+  };
+
+  const handleUpdateGroup = async (id, name, color) => {
+    try {
+      const token = sessionStorage.getItem("token");
+      const response = await fetch(`http://localhost:3000/groups/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ name, color }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update group");
+      }
+
+      fetchData();
+      closeModal();
+    } catch (error) {
+      console.error("Failed to update group:", error);
     }
   };
 
@@ -78,20 +128,25 @@ export function Groups() {
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {groups.map((group) => (
-          <div
-            key={group.name}
-            className="flex justify-center "
-          >
+          <div key={group.id} className="flex justify-center">
             <GroupCard
               data={group}
               onDelete={() => handleDelete(group.id)}
+              onEdit={() => setEditingGroup(group)} // Set editing group
             />
           </div>
         ))}
       </div>
 
-      <Modal isOpen={isModalOpen} closeModal={closeModal} />
+      <Modal
+        isOpen={isModalOpen}
+        closeModal={closeModal}
+        onSave={handleSaveGroup}
+        onUpdate={handleUpdateGroup}
+        isEditing={!!editingGroup}
+        initialGroupName={editingGroup?.name}
+        initialColor={editingGroup?.color}
+      />
     </section>
   );
 }
-
