@@ -2,6 +2,8 @@ import { useParams } from "react-router-dom";
 import { GroupCardDetail } from "../components/GroupCardDetail";
 import { useState, useEffect } from "react";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export const GroupDetails = () => {
   const { groupName } = useParams();
   const [group, setGroup] = useState([]);
@@ -10,7 +12,7 @@ export const GroupDetails = () => {
     try {
       const token = sessionStorage.getItem("token"); // Obtén el token de sessionStorage
       const encodedGroupName = encodeURIComponent(groupName);
-      const response = await fetch(`http://localhost:3000/groups/${encodedGroupName}`, {
+      const response = await fetch(`${API_URL}groups/${encodedGroupName}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

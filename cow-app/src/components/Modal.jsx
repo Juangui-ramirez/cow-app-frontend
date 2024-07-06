@@ -1,6 +1,8 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export const Modal = ({ isOpen, closeModal }) => {
   const [groupName, setGroupName] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
@@ -36,7 +38,7 @@ export const Modal = ({ isOpen, closeModal }) => {
       const token = sessionStorage.getItem("token");
 
 
-      const response = await fetch("http://localhost:3000/groups", {
+      const response = await fetch(`${API_URL}groups`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",
