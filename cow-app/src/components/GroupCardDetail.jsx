@@ -38,8 +38,11 @@ export const GroupCardDetail = ({ data }) => {
           <p className="text-black font-bold">
             Your Total Owe: <span className="text-red-600">$12.000</span>
           </p>
+          <p className="text-black font-bold">
+            Participants: <span className="text-red-600">4</span>
+          </p>
           <button className="bg-brownppal text-white font-semibold w-[80%] max-w-[180px] h-10 rounded-md">
-            Leave the group
+            Delete group
           </button>
         </div>
       </div>
