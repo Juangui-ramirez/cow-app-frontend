@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
+const API_URL = import.meta.env.API_URL;
+
 export function Login() {
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
@@ -14,7 +16,7 @@ export function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3000/auth/login", {
+      const response = await fetch(`${API_URL}auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -33,8 +35,6 @@ export function Login() {
       setMessage("Error to connect database");
     }
   };
-  
-  
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);

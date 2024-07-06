@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
+const API_URL = import.meta.env.API_URL;
+
 export function Register() {
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
@@ -15,7 +17,7 @@ export function Register() {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3000/users", {
+      const response = await fetch(`${API_URL}users`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
