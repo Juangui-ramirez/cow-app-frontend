@@ -26,11 +26,11 @@ export const GroupCardDetail = ({ data }) => {
         </div>
       </div>
 
-      <div className="flex m-4 gap-6 h-full max-h-28">
+      <div className="flex m-4 gap-6 h-full">
         <img
           src={Logo}
           alt=""
-          className=" max-w-24  p-2 rounded-lg "
+          className=" max-w-32  p-2 rounded-lg "
           style={{ backgroundColor: color }}
         />
         <div className="flex flex-col justify-between w-full ">
