@@ -11,7 +11,7 @@ export function Groups() {
 
   const openModal = () => {
     setIsModalOpen(true);
-    setEditingGroup(null); // Clear editing state
+    setEditingGroup(null); 
   };
 
   const closeModal = () => {
