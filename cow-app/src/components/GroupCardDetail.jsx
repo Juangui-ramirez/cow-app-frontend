@@ -1,6 +1,7 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import Logo from "../assets/Logo.svg";
+import { formatCOP } from "../utils/currency";
 
 export const GroupCardDetail = ({
   data,
@@ -155,9 +156,7 @@ export const GroupCardDetail = ({
           <h1 className="text-2xl font-bold">{name}</h1>
           <p className="text-black font-bold">
             Your Total Owe:{" "}
-            <span className="text-red-600">
-              ${yourTotalOwe.toLocaleString("es-CO")}
-            </span>
+            <span className="text-red-600">{formatCOP(yourTotalOwe)}</span>
           </p>
           <p className="text-black font-bold">
             Participants: <span className="text-red-600">{members.length}</span>
@@ -194,13 +193,13 @@ export const GroupCardDetail = ({
             {bills.map((bill) => (
               <li key={bill.id} className="border-b-2 shadow p-3">
                 <p className="font-bold">
-                  {bill.description} — ${Number(bill.amount).toLocaleString("es-CO")}
+                  {bill.description} — {formatCOP(bill.amount)}
                 </p>
                 <ul className="ml-4">
                   {(bill.splits || []).map((split) => (
                     <li key={split.id} className="flex justify-between items-center gap-3">
                       <span>
-                        {split.name} owes ${Number(split.amountOwed).toLocaleString("es-CO")}
+                        {split.name} owes {formatCOP(split.amountOwed)}
                         {split.settled ? " (paid)" : ""}
                       </span>
                       {!split.settled && split.userId === currentUserId && (

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { formatCOP } from "../utils/currency";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -36,13 +37,13 @@ export const Bills = () => {
         <div className="text-center">
           <p className="font-bold text-lg">You owe</p>
           <p className="text-red-600 font-bold text-4xl">
-            ${summary.youOwe.toLocaleString("es-CO")}
+            {formatCOP(summary.youOwe)}
           </p>
         </div>
         <div className="text-center">
           <p className="font-bold text-lg">You are owed</p>
           <p className="text-greensucess font-bold text-4xl">
-            ${summary.youAreOwed.toLocaleString("es-CO")}
+            {formatCOP(summary.youAreOwed)}
           </p>
         </div>
       </div>

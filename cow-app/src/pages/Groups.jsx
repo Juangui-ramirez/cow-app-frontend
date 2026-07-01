@@ -1,6 +1,7 @@
 import { GroupCard } from "../components/GroupCard";
 import { useState, useEffect } from "react";
 import { Modal } from "../components/Modal";
+import { formatCOP } from "../utils/currency";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -8,6 +9,7 @@ export function Groups() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [groups, setGroups] = useState([]);
   const [editingGroup, setEditingGroup] = useState(null);
+  const [youOwe, setYouOwe] = useState(0);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -17,6 +19,7 @@ export function Groups() {
   const closeModal = () => {
     setIsModalOpen(false);
     fetchData();
+    fetchSummary();
   };
 
   const fetchData = async () => {
@@ -44,6 +47,23 @@ export function Groups() {
     }
   };
 
+  const fetchSummary = async () => {
+    try {
+      const response = await fetch(`${API_URL}bills/summary`, {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch bills summary");
+      }
+      const data = await response.json();
+      setYouOwe(data.youOwe);
+    } catch (error) {
+      console.error("Error fetching bills summary:", error);
+    }
+  };
+
   const handleDelete = async (id) => {
     try {
       const response = await fetch(`${API_URL}groups/${id}`, {
@@ -56,6 +76,7 @@ export function Groups() {
         throw new Error("Failed to delete group");
       }
       fetchData();
+      fetchSummary();
     } catch (error) {
       console.error("Error deleting group:", error);
     }
@@ -109,6 +130,7 @@ export function Groups() {
 
   useEffect(() => {
     fetchData();
+    fetchSummary();
   }, []);
 
   return (
@@ -123,7 +145,7 @@ export function Groups() {
       </div>
       <div className="pb-8 m-4">
         <h1 className="font-bold text-2xl">You owe</h1>
-        <p className="text-red-600 font-bold text-4xl">$45.000</p>
+        <p className="text-red-600 font-bold text-4xl">{formatCOP(youOwe)}</p>
       </div>
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
