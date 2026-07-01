@@ -3,11 +3,13 @@ import LogoLogin from "../assets/Logo-login.svg";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { useLanguage } from "../context/LanguageContext";
+import { PreferencesToggle } from "../components/PreferencesToggle";
+import { apiFetch } from "../utils/api";
 
 export function Login() {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -16,12 +18,9 @@ export function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${API_URL}auth/login`, {
+      const response = await apiFetch("auth/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
+        body: { email, password },
       });
       const data = await response.json();
       if (response.ok) {
@@ -32,7 +31,7 @@ export function Login() {
         setMessage(data.message);
       }
     } catch (error) {
-      setMessage("Error to connect database");
+      setMessage(t("login.error.connection"));
     }
   };
 
@@ -46,12 +45,15 @@ export function Login() {
 
   return (
     <section className="min-h-[75vh]">
-      <div className="flex justify-center mt-14">
+      <div className="flex justify-end p-4">
+        <PreferencesToggle />
+      </div>
+      <div className="flex justify-center mt-4">
         <img src={LogoLogin} alt="Logo Cow login" className="" />
       </div>
 
-      <h1 className="text-2xl text-center mt-7 font-bold text-brownsec">
-        Login
+      <h1 className="text-2xl text-center mt-7 font-bold text-brownsec dark:text-amarello">
+        {t("login.title")}
       </h1>
       <div className="flex justify-center">
         <form
@@ -59,24 +61,24 @@ export function Login() {
           className="flex flex-col gap-5 mt-8 min-w-[18em]"
         >
           <input
-            className="border rounded font-semibold text-brownsec py-2 px-3"
+            className="border rounded font-semibold text-brownsec py-2 px-3 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600"
             id="email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email @"
+            placeholder={t("login.email")}
             required
             onFocus={clearMessage}
           />
 
           <div className="relative flex items-center">
             <input
-              className="border rounded font-semibold text-amarello py-2 px-3 flex-grow"
+              className="border rounded font-semibold text-amarello py-2 px-3 flex-grow dark:bg-gray-800 dark:border-gray-600"
               id="password"
               type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
+              placeholder={t("login.password")}
               required
               onFocus={clearMessage}
             />
@@ -102,13 +104,13 @@ export function Login() {
             className="bg-brownppal hover:bg-brownsec text-white font-semibold py-2 px-4 rounded"
             type="submit"
           >
-            Login
+            {t("login.submit")}
           </button>
           <Link
             to="/register"
             className="bg-brownppal text-center hover:bg-brownsec text-white font-semibold py-2 px-4 rounded"
           >
-            Register
+            {t("login.register")}
           </Link>
         </form>
       </div>

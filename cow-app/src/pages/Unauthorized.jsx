@@ -1,24 +1,31 @@
 import { Link } from "react-router-dom";
 import LogoLogin from "../assets/Logo-login.svg";
 import { Button } from "../components/Button.jsx";
+import { useLanguage } from "../context/LanguageContext";
+import { PreferencesToggle } from "../components/PreferencesToggle";
 
 export function Unauthorized() {
+  const { t } = useLanguage();
+
   return (
-    <section className="min-h-[85vh] flex flex-col items-center justify-center p-4">
+    <section className="min-h-[85vh] flex flex-col items-center justify-center p-4 relative">
+      <div className="absolute top-4 right-4">
+        <PreferencesToggle />
+      </div>
       <div className="flex flex-col items-center">
         <img src={LogoLogin} alt="Logo Cow" className="pb-6" />
-        <h1 className="text-3xl font-bold text-brownsec mb-4">
-          Unauthorized Access
+        <h1 className="text-3xl font-bold text-brownsec dark:text-amarello mb-4">
+          {t("unauthorized.title")}
         </h1>
         <p className="text-lg mb-6 text-center">
-          You need to register or log in to access this page.
+          {t("unauthorized.message")}
         </p>
         <div className="flex gap-4">
           <Link to="/register">
-            <Button text="Register" />
+            <Button text={t("unauthorized.register")} onClick={() => {}} />
           </Link>
           <Link to="/">
-            <Button text="Log In" />
+            <Button text={t("unauthorized.login")} onClick={() => {}} />
           </Link>
         </div>
       </div>

@@ -1,114 +1,65 @@
 import { GroupCard } from "../components/GroupCard";
 import { useState, useEffect } from "react";
 import { Modal } from "../components/Modal";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { formatCOP } from "../utils/currency";
+import { useLanguage } from "../context/LanguageContext";
+import { apiFetch } from "../utils/api";
 
 export function Groups() {
+  const { t } = useLanguage();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [groups, setGroups] = useState([]);
-  const [editingGroup, setEditingGroup] = useState(null);
+  const [youOwe, setYouOwe] = useState(0);
 
-  const openModal = () => {
-    setIsModalOpen(true);
-    setEditingGroup(null); // Clear editing state
-  };
+  const openModal = () => setIsModalOpen(true);
 
   const closeModal = () => {
     setIsModalOpen(false);
     fetchData();
+    fetchSummary();
   };
 
   const fetchData = async () => {
     try {
-      const userId = sessionStorage.getItem("userId");
-      const token = sessionStorage.getItem("token");
-
-      const response = await fetch(
-        `${API_URL}groups?sort=desc&userId=${userId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
+      const response = await apiFetch("groups?sort=desc");
       if (!response.ok) {
         throw new Error("Failed to fetch groups");
       }
-
-      const data = await response.json();
-      setGroups(data);
+      setGroups(await response.json());
     } catch (error) {
       console.error("Error fetching groups:", error);
     }
   };
 
+  const fetchSummary = async () => {
+    try {
+      const response = await apiFetch("bills/summary");
+      if (!response.ok) {
+        throw new Error("Failed to fetch bills summary");
+      }
+      const data = await response.json();
+      setYouOwe(data.youOwe);
+    } catch (error) {
+      console.error("Error fetching bills summary:", error);
+    }
+  };
+
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`${API_URL}groups/${id}`, {
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-        },
-        method: "DELETE",
-      });
+      const response = await apiFetch(`groups/${id}`, { method: "DELETE" });
       if (!response.ok) {
         throw new Error("Failed to delete group");
       }
       fetchData();
+      fetchSummary();
     } catch (error) {
       console.error("Error deleting group:", error);
     }
   };
 
-  const handleSaveGroup = async (name, color) => {
-    try {
-      const token = sessionStorage.getItem("token");
-      const response = await fetch("http://localhost:3000/groups", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ name, color }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Name in use");
-      }
-
-      fetchData();
-      closeModal();
-    } catch (error) {
-      console.error("Failed to create group:", error);
-    }
-  };
-
-  const handleUpdateGroup = async (id, name, color) => {
-    try {
-      const token = sessionStorage.getItem("token");
-      const response = await fetch(`http://localhost:3000/groups/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ name, color }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to update group");
-      }
-
-      fetchData();
-      closeModal();
-    } catch (error) {
-      console.error("Failed to update group:", error);
-    }
-  };
-
   useEffect(() => {
     fetchData();
+    fetchSummary();
   }, []);
 
   return (
@@ -118,35 +69,23 @@ export function Groups() {
           className="bg-brownppal text-white font-medium rounded-md h-[2em] w-[8em]"
           onClick={openModal}
         >
-          New Group
+          {t("groups.newGroup")}
         </button>
       </div>
       <div className="pb-8 m-4">
-        <h1 className="font-bold text-2xl">You owe</h1>
-        <p className="text-red-600 font-bold text-4xl">$45.000</p>
+        <h1 className="font-bold text-2xl">{t("groups.youOwe")}</h1>
+        <p className="text-red-600 font-bold text-4xl">{formatCOP(youOwe)}</p>
       </div>
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {groups.map((group) => (
           <div key={group.id} className="flex justify-center">
-            <GroupCard
-              data={group}
-              onDelete={() => handleDelete(group.id)}
-              onEdit={() => setEditingGroup(group)} // Set editing group
-            />
+            <GroupCard data={group} onDelete={() => handleDelete(group.id)} />
           </div>
         ))}
       </div>
 
-      <Modal
-        isOpen={isModalOpen}
-        closeModal={closeModal}
-        onSave={handleSaveGroup}
-        onUpdate={handleUpdateGroup}
-        isEditing={!!editingGroup}
-        initialGroupName={editingGroup?.name}
-        initialColor={editingGroup?.color}
-      />
+      <Modal isOpen={isModalOpen} closeModal={closeModal} />
     </section>
   );
 }

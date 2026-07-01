@@ -3,11 +3,13 @@ import LogoLogin from "../assets/Logo-login.svg";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { useLanguage } from "../context/LanguageContext";
+import { PreferencesToggle } from "../components/PreferencesToggle";
+import { apiFetch } from "../utils/api";
 
 export function Register() {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -17,12 +19,9 @@ export function Register() {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${API_URL}users`, {
+      const response = await apiFetch("users", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, email, password }),
+        body: { name, email, password },
       });
       const data = await response.json();
       if (response.ok) {
@@ -33,7 +32,7 @@ export function Register() {
         setMessage(data.message);
       }
     } catch (error) {
-      setMessage("Error connecting to database");
+      setMessage(t("register.error.connection"));
     }
   };
 
@@ -47,12 +46,15 @@ export function Register() {
 
   return (
     <section className="min-h-[75vh] flex flex-col justify-center">
+      <div className="flex justify-end p-4">
+        <PreferencesToggle />
+      </div>
       <div className="flex justify-center">
         <img src={LogoLogin} alt="Logo Cow login" className="" />
       </div>
 
-      <h1 className="text-2xl text-center mt-7 font-bold text-brownsec">
-        Register
+      <h1 className="text-2xl text-center mt-7 font-bold text-brownsec dark:text-amarello">
+        {t("register.title")}
       </h1>
       <div className="flex justify-center">
         <form
@@ -60,35 +62,35 @@ export function Register() {
           className="flex flex-col gap-5 mt-8 min-w-[18em]"
         >
           <input
-            className="border rounded font-semibold text-brownsec py-2 px-3"
+            className="border rounded font-semibold text-brownsec py-2 px-3 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600"
             id="name"
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Name"
+            placeholder={t("register.name")}
             required
             onFocus={clearMessage}
           />
 
           <input
-            className="border rounded font-semibold text-brownsec py-2 px-3"
+            className="border rounded font-semibold text-brownsec py-2 px-3 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600"
             id="email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email @"
+            placeholder={t("register.email")}
             required
             onFocus={clearMessage}
           />
 
           <div className="relative flex items-center">
             <input
-              className="border rounded font-semibold text-amarello py-2 px-3 flex-grow"
+              className="border rounded font-semibold text-amarello py-2 px-3 flex-grow dark:bg-gray-800 dark:border-gray-600"
               id="password"
               type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
+              placeholder={t("register.password")}
               required
               onFocus={clearMessage}
             />
@@ -114,7 +116,7 @@ export function Register() {
             className="bg-brownppal hover:bg-brownsec text-white font-semibold py-2 px-4 rounded"
             type="submit"
           >
-            Sign In
+            {t("register.submit")}
           </button>
         </form>
       </div>
