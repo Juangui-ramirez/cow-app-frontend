@@ -2,10 +2,12 @@ import { GroupCard } from "../components/GroupCard";
 import { useState, useEffect } from "react";
 import { Modal } from "../components/Modal";
 import { formatCOP } from "../utils/currency";
+import { useLanguage } from "../context/LanguageContext";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 export function Groups() {
+  const { t } = useLanguage();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [groups, setGroups] = useState([]);
   const [editingGroup, setEditingGroup] = useState(null);
@@ -140,11 +142,11 @@ export function Groups() {
           className="bg-brownppal text-white font-medium rounded-md h-[2em] w-[8em]"
           onClick={openModal}
         >
-          New Group
+          {t("groups.newGroup")}
         </button>
       </div>
       <div className="pb-8 m-4">
-        <h1 className="font-bold text-2xl">You owe</h1>
+        <h1 className="font-bold text-2xl">{t("groups.youOwe")}</h1>
         <p className="text-red-600 font-bold text-4xl">{formatCOP(youOwe)}</p>
       </div>
 

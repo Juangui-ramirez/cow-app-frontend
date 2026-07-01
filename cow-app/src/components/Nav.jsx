@@ -2,9 +2,11 @@ import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretUp } from "@fortawesome/free-solid-svg-icons";
+import { useLanguage } from "../context/LanguageContext";
 
 export const Nav = () => {
   const location = useLocation();
+  const { t } = useLanguage();
   const [activeLink, setActiveLink] = useState("");
 
   useEffect(() => {
@@ -18,7 +20,7 @@ export const Nav = () => {
           to="/friends"
           className={`relative ${activeLink === "/friends" ? "active" : ""}`}
         >
-          Friends
+          {t("nav.friends")}
           {activeLink === "/friends" && (
             <FontAwesomeIcon
               icon={faCaretUp}
@@ -31,7 +33,7 @@ export const Nav = () => {
           to="/bills"
           className={`relative ${activeLink === "/bills" ? "active" : ""}`}
         >
-          Bills
+          {t("nav.bills")}
           {activeLink === "/bills" && (
             <FontAwesomeIcon
               icon={faCaretUp}
@@ -44,7 +46,7 @@ export const Nav = () => {
           to="/groups"
           className={`relative ${activeLink === "/groups" ? "active" : ""}`}
         >
-          Groups
+          {t("nav.groups")}
           {activeLink === "/groups" && (
             <FontAwesomeIcon
               icon={faCaretUp}

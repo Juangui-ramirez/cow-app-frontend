@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { Button } from "../components/Button";
+import { useLanguage } from "../context/LanguageContext";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 export const Friends = () => {
+  const { t } = useLanguage();
   const [friends, setFriends] = useState([]);
   const [pending, setPending] = useState([]);
   const [email, setEmail] = useState("");
@@ -106,7 +108,7 @@ export const Friends = () => {
 
   return (
     <section className="min-h-[75vh] p-4">
-      <h1 className="text-2xl font-bold text-center mb-6">Friends</h1>
+      <h1 className="text-2xl font-bold text-center mb-6">{t("friends.title")}</h1>
 
       <form
         onSubmit={handleAddFriend}
@@ -114,13 +116,13 @@ export const Friends = () => {
       >
         <input
           type="email"
-          placeholder="Friend's email"
-          className="border rounded font-semibold text-brownsec py-2 px-3"
+          placeholder={t("friends.emailPlaceholder")}
+          className="border rounded font-semibold text-brownsec py-2 px-3 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-        <Button text="Add Friend" onClick={() => {}} />
+        <Button text={t("friends.addFriend")} onClick={() => {}} />
       </form>
       {message && (
         <p className="text-rederror font-semibold text-center mb-6">
@@ -130,20 +132,20 @@ export const Friends = () => {
 
       {pending.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-xl font-bold mb-3">Friend requests</h2>
+          <h2 className="text-xl font-bold mb-3">{t("friends.requests")}</h2>
           <div className="flex flex-col gap-3">
             {pending.map((request) => (
               <div
                 key={request.id}
-                className="flex justify-between items-center border-b-2 shadow p-3"
+                className="flex justify-between items-center border-b-2 dark:border-gray-700 shadow p-3"
               >
                 <div>
                   <p className="font-bold">{request.friendName}</p>
                   <p className="text-sm">{request.friendEmail}</p>
                 </div>
                 <div className="flex gap-2">
-                  <Button text="Accept" onClick={() => handleAccept(request.id)} />
-                  <Button text="Reject" onClick={() => handleReject(request.id)} />
+                  <Button text={t("friends.accept")} onClick={() => handleAccept(request.id)} />
+                  <Button text={t("friends.reject")} onClick={() => handleReject(request.id)} />
                 </div>
               </div>
             ))}
@@ -151,13 +153,13 @@ export const Friends = () => {
         </div>
       )}
 
-      <h2 className="text-xl font-bold mb-3">Your friends</h2>
+      <h2 className="text-xl font-bold mb-3">{t("friends.yourFriends")}</h2>
       {friends.length === 0 ? (
-        <p className="text-center">Amiwis no hay</p>
+        <p className="text-center">{t("friends.noFriends")}</p>
       ) : (
         <div className="flex flex-col gap-3">
           {friends.map((friend) => (
-            <div key={friend.id} className="flex justify-between items-center border-b-2 shadow p-3">
+            <div key={friend.id} className="flex justify-between items-center border-b-2 dark:border-gray-700 shadow p-3">
               <div>
                 <p className="font-bold">{friend.friendName}</p>
                 <p className="text-sm">{friend.friendEmail}</p>

@@ -2,6 +2,7 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import Logo from "../assets/Logo.svg";
 import { formatCOP } from "../utils/currency";
+import { useLanguage } from "../context/LanguageContext";
 
 export const GroupCardDetail = ({
   data,
@@ -12,6 +13,7 @@ export const GroupCardDetail = ({
   onSettleSplit,
   onDeleteGroup,
 }) => {
+  const { t } = useLanguage();
   const { name, color, createdat } = data;
   const currentUserId = Number(sessionStorage.getItem("userId"));
 
@@ -52,14 +54,14 @@ export const GroupCardDetail = ({
     e.preventDefault();
     setError("");
     if (!billDescription.trim() || !billAmount) {
-      setError("Description and amount are required");
+      setError(t("groupDetails.error.descriptionAndAmountRequired"));
       return;
     }
 
     let splits;
     if (splitMode === "custom") {
       if (Math.abs(customRemaining) > 0.01) {
-        setError("The amounts must add up to the total bill amount");
+        setError(t("groupDetails.error.splitsMustAddUp"));
         return;
       }
       splits = otherMembers
@@ -86,7 +88,7 @@ export const GroupCardDetail = ({
     e.preventDefault();
     setError("");
     if (!friendEmail.trim()) {
-      setError("Email is required");
+      setError(t("groupDetails.error.emailRequired"));
       return;
     }
     try {
@@ -110,7 +112,7 @@ export const GroupCardDetail = ({
               setShowBillForm((prev) => !prev);
             }}
           >
-            New Bill
+            {t("groupDetails.newBill")}
           </button>
           <button
             className="bg-brownppal text-white font-semibold w-28 h-8 rounded-md"
@@ -120,10 +122,10 @@ export const GroupCardDetail = ({
               setShowFriendForm((prev) => !prev);
             }}
           >
-            New Friend
+            {t("groupDetails.newFriend")}
           </button>
           <button className="bg-brownppal text-white font-semibold w-28 h-8 rounded-md">
-            Edit Group
+            {t("groupDetails.editGroup")}
           </button>
         </div>
       </div>
@@ -132,8 +134,8 @@ export const GroupCardDetail = ({
         <form onSubmit={handleSubmitBill} className="flex flex-col gap-3 m-6 max-w-md">
           <input
             type="text"
-            placeholder="What was it for?"
-            className="border rounded font-semibold py-2 px-3"
+            placeholder={t("groupDetails.whatWasItFor")}
+            className="border rounded font-semibold py-2 px-3 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600"
             value={billDescription}
             onChange={(e) => setBillDescription(e.target.value)}
             maxLength={100}
@@ -142,8 +144,8 @@ export const GroupCardDetail = ({
             type="number"
             min="0.01"
             step="0.01"
-            placeholder="Amount"
-            className="border rounded font-semibold py-2 px-3"
+            placeholder={t("groupDetails.amount")}
+            className="border rounded font-semibold py-2 px-3 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600"
             value={billAmount}
             onChange={(e) => setBillAmount(e.target.value)}
           />
@@ -156,7 +158,7 @@ export const GroupCardDetail = ({
                 checked={splitMode === "equal"}
                 onChange={() => setSplitMode("equal")}
               />
-              Split equally
+              {t("groupDetails.splitEqually")}
             </label>
             <label className="flex items-center gap-1">
               <input
@@ -165,14 +167,14 @@ export const GroupCardDetail = ({
                 checked={splitMode === "custom"}
                 onChange={() => setSplitMode("custom")}
               />
-              Split by amount
+              {t("groupDetails.splitByAmount")}
             </label>
           </div>
 
           {splitMode === "custom" && (
-            <div className="flex flex-col gap-2 border rounded p-3">
+            <div className="flex flex-col gap-2 border rounded p-3 dark:border-gray-600">
               {otherMembers.length === 0 ? (
-                <p className="text-sm">No other members to split with.</p>
+                <p className="text-sm">{t("groupDetails.noOtherMembers")}</p>
               ) : (
                 otherMembers.map((member) => (
                   <div key={member.userId} className="flex justify-between items-center gap-2">
@@ -182,7 +184,7 @@ export const GroupCardDetail = ({
                       min="0"
                       step="0.01"
                       placeholder="0"
-                      className="border rounded py-1 px-2 w-28"
+                      className="border rounded py-1 px-2 w-28 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600"
                       value={customAmounts[member.userId] ?? ""}
                       onChange={(e) => handleCustomAmountChange(member.userId, e.target.value)}
                     />
@@ -190,7 +192,7 @@ export const GroupCardDetail = ({
                 ))
               )}
               <p className="text-sm font-semibold">
-                Remaining to assign: {formatCOP(customRemaining)}
+                {t("groupDetails.remainingToAssign")} {formatCOP(customRemaining)}
               </p>
             </div>
           )}
@@ -199,7 +201,7 @@ export const GroupCardDetail = ({
             type="submit"
             className="bg-brownppal text-white font-medium rounded-md h-[40px] w-full"
           >
-            Save Bill
+            {t("groupDetails.saveBill")}
           </button>
         </form>
       )}
@@ -208,8 +210,8 @@ export const GroupCardDetail = ({
         <form onSubmit={handleSubmitFriend} className="flex flex-col gap-3 m-6 max-w-md">
           <input
             type="email"
-            placeholder="Friend's email"
-            className="border rounded font-semibold py-2 px-3"
+            placeholder={t("groupDetails.friendsEmail")}
+            className="border rounded font-semibold py-2 px-3 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600"
             value={friendEmail}
             onChange={(e) => setFriendEmail(e.target.value)}
           />
@@ -217,7 +219,7 @@ export const GroupCardDetail = ({
             type="submit"
             className="bg-brownppal text-white font-medium rounded-md h-[40px] w-full"
           >
-            Add to group
+            {t("groupDetails.addToGroup")}
           </button>
         </form>
       )}
@@ -233,29 +235,29 @@ export const GroupCardDetail = ({
         />
         <div className="flex flex-col justify-between w-full ">
           <h1 className="text-2xl font-bold">{name}</h1>
-          <p className="text-black font-bold">
-            Your Total Owe:{" "}
+          <p className="text-black dark:text-gray-100 font-bold">
+            {t("groupDetails.yourTotalOwe")}{" "}
             <span className="text-red-600">{formatCOP(yourTotalOwe)}</span>
           </p>
-          <p className="text-black font-bold">
-            Participants: <span className="text-red-600">{members.length}</span>
+          <p className="text-black dark:text-gray-100 font-bold">
+            {t("groupDetails.participants")} <span className="text-red-600">{members.length}</span>
           </p>
           <button
             className="bg-brownppal text-white font-semibold w-[80%] max-w-[180px] h-10 rounded-md"
             onClick={onDeleteGroup}
           >
-            Delete group
+            {t("groupDetails.deleteGroup")}
           </button>
         </div>
       </div>
 
       <h1 className="m-4 text-2xl font-bold text-amarello">
-        Friends and Bills
+        {t("groupDetails.friendsAndBills")}
       </h1>
       <p className="ml-6">{formattedDate}</p>
 
       <div className="m-6">
-        <h2 className="font-bold text-lg mb-2">Participants</h2>
+        <h2 className="font-bold text-lg mb-2">{t("groupDetails.participantsHeading")}</h2>
         <ul className="mb-6">
           {members.map((member) => (
             <li key={member.userId}>
@@ -264,13 +266,13 @@ export const GroupCardDetail = ({
           ))}
         </ul>
 
-        <h2 className="font-bold text-lg mb-2">Bills</h2>
+        <h2 className="font-bold text-lg mb-2">{t("groupDetails.billsHeading")}</h2>
         {bills.length === 0 ? (
-          <p>No bills yet.</p>
+          <p>{t("groupDetails.noBillsYet")}</p>
         ) : (
           <ul className="flex flex-col gap-3">
             {bills.map((bill) => (
-              <li key={bill.id} className="border-b-2 shadow p-3">
+              <li key={bill.id} className="border-b-2 dark:border-gray-700 shadow p-3">
                 <p className="font-bold">
                   {bill.description} — {formatCOP(bill.amount)}
                 </p>
@@ -278,15 +280,15 @@ export const GroupCardDetail = ({
                   {(bill.splits || []).map((split) => (
                     <li key={split.id} className="flex justify-between items-center gap-3">
                       <span>
-                        {split.name} owes {formatCOP(split.amountOwed)}
-                        {split.settled ? " (paid)" : ""}
+                        {split.name} {t("groupDetails.owes")} {formatCOP(split.amountOwed)}
+                        {split.settled ? ` ${t("groupDetails.paid")}` : ""}
                       </span>
                       {!split.settled && split.userId === currentUserId && (
                         <button
                           className="bg-brownppal text-white font-semibold rounded-md px-2 h-7 text-sm"
                           onClick={() => onSettleSplit(split.id)}
                         >
-                          Mark as paid
+                          {t("groupDetails.markAsPaid")}
                         </button>
                       )}
                     </li>

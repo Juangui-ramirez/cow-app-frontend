@@ -10,9 +10,14 @@ import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
 import { Unauthorized } from "./pages/Unauthorized";
 import { PrivateRoute } from "./components/PrivateRoute";
+import { ThemeProvider } from "./context/ThemeContext";
+import { LanguageProvider } from "./context/LanguageContext";
 
 function App() {
   return (
+    <ThemeProvider>
+    <LanguageProvider>
+    <div className="min-h-screen bg-white text-black dark:bg-gray-900 dark:text-gray-100 transition-colors">
     <BrowserRouter>
       <Routes>
         <Route
@@ -83,6 +88,9 @@ function App() {
         </Route>
       </Routes>
     </BrowserRouter>
+    </div>
+    </LanguageProvider>
+    </ThemeProvider>
   );
 }
 
