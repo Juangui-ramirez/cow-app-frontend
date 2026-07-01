@@ -120,7 +120,7 @@ export const Friends = () => {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-        <Button text="Add Friend" />
+        <Button text="Add Friend" onClick={() => {}} />
       </form>
       {message && (
         <p className="text-rederror font-semibold text-center mb-6">
