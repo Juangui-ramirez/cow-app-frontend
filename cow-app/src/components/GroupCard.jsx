@@ -23,7 +23,7 @@ export const GroupCard = ({ data, onDelete }) => {
         </p>
         <div className="flex gap-2">
           <Link to={`/groups/${data.id}`}>
-            <Button text="See" />
+            <Button text="See" onClick={() => {}} />
           </Link>
           <Button text="Leave" onClick={handleDelete} />
         </div>
@@ -34,11 +34,10 @@ export const GroupCard = ({ data, onDelete }) => {
 
 
 GroupCard.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      color: PropTypes.string.isRequired,
-    })
-  ).isRequired,
+  data: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    color: PropTypes.string.isRequired,
+  }).isRequired,
   onDelete: PropTypes.func.isRequired,
 };

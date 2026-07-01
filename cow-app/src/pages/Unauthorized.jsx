@@ -15,10 +15,10 @@ export function Unauthorized() {
         </p>
         <div className="flex gap-4">
           <Link to="/register">
-            <Button text="Register" />
+            <Button text="Register" onClick={() => {}} />
           </Link>
           <Link to="/">
-            <Button text="Log In" />
+            <Button text="Log In" onClick={() => {}} />
           </Link>
         </div>
       </div>
