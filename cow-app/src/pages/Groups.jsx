@@ -64,7 +64,7 @@ export function Groups() {
   const handleSaveGroup = async (name, color) => {
     try {
       const token = sessionStorage.getItem("token");
-      const response = await fetch("http://localhost:3000/groups", {
+      const response = await fetch(`${API_URL}groups`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -87,7 +87,7 @@ export function Groups() {
   const handleUpdateGroup = async (id, name, color) => {
     try {
       const token = sessionStorage.getItem("token");
-      const response = await fetch(`http://localhost:3000/groups/${id}`, {
+      const response = await fetch(`${API_URL}groups/${id}`, {
         method: "PUT",
         headers: {
           "Content-type": "application/json",
