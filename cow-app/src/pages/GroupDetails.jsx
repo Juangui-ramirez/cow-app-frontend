@@ -76,48 +76,42 @@ export const GroupDetails = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groupName]);
 
+  // Note: these two intentionally let errors propagate (no try/catch) so
+  // GroupCardDetail's submit handlers can show the failure to the user.
   const handleAddBill = async (description, amount) => {
-    try {
-      const response = await fetch(`${API_URL}bills`, {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-          ...authHeaders(),
-        },
-        body: JSON.stringify({ groupId: group.id, description, amount }),
-      });
+    const response = await fetch(`${API_URL}bills`, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+        ...authHeaders(),
+      },
+      body: JSON.stringify({ groupId: group.id, description, amount }),
+    });
 
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.message || "Failed to create bill");
-      }
-
-      refreshDetails();
-    } catch (error) {
-      console.error("Error creating bill:", error);
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(data.message || "Failed to create bill");
     }
+
+    refreshDetails();
   };
 
   const handleAddMember = async (email) => {
-    try {
-      const response = await fetch(`${API_URL}groups/${group.id}/members`, {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-          ...authHeaders(),
-        },
-        body: JSON.stringify({ email }),
-      });
+    const response = await fetch(`${API_URL}groups/${group.id}/members`, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+        ...authHeaders(),
+      },
+      body: JSON.stringify({ email }),
+    });
 
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.message || "Failed to add member");
-      }
-
-      refreshDetails();
-    } catch (error) {
-      console.error("Error adding member:", error);
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(data.message || "Failed to add member");
     }
+
+    refreshDetails();
   };
 
   const handleSettleSplit = async (splitId) => {

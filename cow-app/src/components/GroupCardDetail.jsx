@@ -40,10 +40,14 @@ export const GroupCardDetail = ({
       setError("Description and amount are required");
       return;
     }
-    await onAddBill(billDescription.trim(), Number(billAmount));
-    setBillDescription("");
-    setBillAmount("");
-    setShowBillForm(false);
+    try {
+      await onAddBill(billDescription.trim(), Number(billAmount));
+      setBillDescription("");
+      setBillAmount("");
+      setShowBillForm(false);
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   const handleSubmitFriend = async (e) => {
@@ -53,9 +57,13 @@ export const GroupCardDetail = ({
       setError("Email is required");
       return;
     }
-    await onAddMember(friendEmail.trim());
-    setFriendEmail("");
-    setShowFriendForm(false);
+    try {
+      await onAddMember(friendEmail.trim());
+      setFriendEmail("");
+      setShowFriendForm(false);
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   return (
