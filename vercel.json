@@ -1,0 +1,8 @@
+{
+  "installCommand": "npm --prefix cow-app install",
+  "buildCommand": "npm --prefix cow-app run build",
+  "outputDirectory": "cow-app/dist",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
