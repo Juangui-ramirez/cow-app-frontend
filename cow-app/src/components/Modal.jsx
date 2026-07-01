@@ -1,29 +1,27 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { useLanguage } from "../context/LanguageContext";
+import { apiFetch } from "../utils/api";
 
-const API_URL = import.meta.env.VITE_API_URL;
+const COLORS = [
+  "#FF0000",
+  "#00FF00",
+  "#0000FF",
+  "#FFFF00",
+  "#FF00FF",
+  "#14b8a6",
+  "#67e8f9",
+  "#4c1d95",
+];
+
+const getRandomColor = () =>
+  "#" + Math.floor(Math.random() * 16777215).toString(16);
 
 export const Modal = ({ isOpen, closeModal }) => {
   const { t } = useLanguage();
   const [groupName, setGroupName] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
   const [error, setError] = useState(null);
-  const colors = [
-    "#FF0000",
-    "#00FF00",
-    "#0000FF",
-    "#FFFF00",
-    "#FF00FF",
-    "#14b8a6",
-    "#67e8f9",
-    "#4c1d95",
-  ];
-
-  const getRandomColor = () => {
-    const randomColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
-    return randomColor;
-  };
 
   const handleCreateGroup = async () => {
     try {
@@ -31,22 +29,11 @@ export const Modal = ({ isOpen, closeModal }) => {
         throw new Error(t("modal.error.nameRequired"));
       }
 
-      let colorToUse = selectedColor;
-      if (!selectedColor) {
-        colorToUse = getRandomColor();
-        setSelectedColor(colorToUse);
-      }
+      const color = selectedColor || getRandomColor();
 
-      const token = sessionStorage.getItem("token");
-
-
-      const response = await fetch(`${API_URL}groups`, {
+      const response = await apiFetch("groups", {
         method: "POST",
-        headers: {
-          "Content-type": "application/json",
-          authorization: `bearer ${token}`,
-        },
-        body: JSON.stringify({ name: groupName, color: colorToUse }),
+        body: { name: groupName, color },
       });
 
       if (!response.ok) {
@@ -64,10 +51,6 @@ export const Modal = ({ isOpen, closeModal }) => {
     setSelectedColor("");
     setError(null);
     closeModal();
-  };
-
-  const handleRandomColor = () => {
-    setSelectedColor(getRandomColor());
   };
 
   if (!isOpen) return null;
@@ -93,9 +76,9 @@ export const Modal = ({ isOpen, closeModal }) => {
         />
 
         <div className="grid grid-cols-4 gap-4 border border-gray-400 dark:border-gray-600 rounded-md p-6">
-          {colors.map((color, index) => (
+          {COLORS.map((color) => (
             <div
-              key={index}
+              key={color}
               className={`w-auto h-14 rounded-md cursor-pointer ${
                 selectedColor === color ? "border-2 border-black" : ""
               }`}
@@ -110,10 +93,7 @@ export const Modal = ({ isOpen, closeModal }) => {
         </div>
         <button
           className="bg-[#36190D] text-white font-medium rounded-md h-[40px] w-full flex justify-center items-center mt-4"
-          onClick={() => {
-            handleCreateGroup();
-            handleRandomColor();
-          }}
+          onClick={handleCreateGroup}
         >
           {t("modal.createGroup")}
         </button>

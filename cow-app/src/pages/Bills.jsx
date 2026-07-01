@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { formatCOP } from "../utils/currency";
 import { useLanguage } from "../context/LanguageContext";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { apiFetch } from "../utils/api";
 
 export const Bills = () => {
   const { t } = useLanguage();
@@ -11,16 +10,10 @@ export const Bills = () => {
   useEffect(() => {
     const fetchSummary = async () => {
       try {
-        const response = await fetch(`${API_URL}bills/summary`, {
-          headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-          },
-        });
-
+        const response = await apiFetch("bills/summary");
         if (!response.ok) {
           throw new Error("Failed to fetch bills summary");
         }
-
         setSummary(await response.json());
       } catch (error) {
         console.error("Error fetching bills summary:", error);

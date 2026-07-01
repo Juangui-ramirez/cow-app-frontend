@@ -5,8 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { useLanguage } from "../context/LanguageContext";
 import { PreferencesToggle } from "../components/PreferencesToggle";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { apiFetch } from "../utils/api";
 
 export function Login() {
   const navigate = useNavigate();
@@ -19,12 +18,9 @@ export function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${API_URL}auth/login`, {
+      const response = await apiFetch("auth/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
+        body: { email, password },
       });
       const data = await response.json();
       if (response.ok) {

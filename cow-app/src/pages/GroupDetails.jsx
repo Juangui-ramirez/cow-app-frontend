@@ -1,8 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { GroupCardDetail } from "../components/GroupCardDetail";
 import { useState, useEffect } from "react";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { apiFetch } from "../utils/api";
 
 export const GroupDetails = () => {
   const { groupName } = useParams();
@@ -11,16 +10,10 @@ export const GroupDetails = () => {
   const [members, setMembers] = useState([]);
   const [bills, setBills] = useState([]);
 
-  const authHeaders = () => ({
-    Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-  });
-
   const fetchGroup = async () => {
     try {
       const encodedGroupName = encodeURIComponent(groupName);
-      const response = await fetch(`${API_URL}groups/${encodedGroupName}`, {
-        headers: authHeaders(),
-      });
+      const response = await apiFetch(`groups/${encodedGroupName}`);
 
       if (!response.ok) {
         throw new Error("Failed to fetch group details");
@@ -37,9 +30,7 @@ export const GroupDetails = () => {
 
   const fetchMembers = async (groupId) => {
     try {
-      const response = await fetch(`${API_URL}groups/${groupId}/members`, {
-        headers: authHeaders(),
-      });
+      const response = await apiFetch(`groups/${groupId}/members`);
       if (!response.ok) {
         throw new Error("Failed to fetch group members");
       }
@@ -51,9 +42,7 @@ export const GroupDetails = () => {
 
   const fetchBills = async (groupId) => {
     try {
-      const response = await fetch(`${API_URL}bills?groupId=${groupId}`, {
-        headers: authHeaders(),
-      });
+      const response = await apiFetch(`bills?groupId=${groupId}`);
       if (!response.ok) {
         throw new Error("Failed to fetch bills");
       }
@@ -79,13 +68,9 @@ export const GroupDetails = () => {
   // Note: these two intentionally let errors propagate (no try/catch) so
   // GroupCardDetail's submit handlers can show the failure to the user.
   const handleAddBill = async (description, amount, splits) => {
-    const response = await fetch(`${API_URL}bills`, {
+    const response = await apiFetch("bills", {
       method: "POST",
-      headers: {
-        "Content-type": "application/json",
-        ...authHeaders(),
-      },
-      body: JSON.stringify({ groupId: group.id, description, amount, splits }),
+      body: { groupId: group.id, description, amount, splits },
     });
 
     if (!response.ok) {
@@ -97,13 +82,9 @@ export const GroupDetails = () => {
   };
 
   const handleAddMember = async (email) => {
-    const response = await fetch(`${API_URL}groups/${group.id}/members`, {
+    const response = await apiFetch(`groups/${group.id}/members`, {
       method: "POST",
-      headers: {
-        "Content-type": "application/json",
-        ...authHeaders(),
-      },
-      body: JSON.stringify({ email }),
+      body: { email },
     });
 
     if (!response.ok) {
@@ -116,10 +97,7 @@ export const GroupDetails = () => {
 
   const handleSettleSplit = async (splitId) => {
     try {
-      const response = await fetch(`${API_URL}bills/splits/${splitId}/settle`, {
-        method: "PUT",
-        headers: authHeaders(),
-      });
+      const response = await apiFetch(`bills/splits/${splitId}/settle`, { method: "PUT" });
 
       if (!response.ok) {
         throw new Error("Failed to settle bill split");
@@ -133,10 +111,7 @@ export const GroupDetails = () => {
 
   const handleDeleteGroup = async () => {
     try {
-      const response = await fetch(`${API_URL}groups/${group.id}`, {
-        method: "DELETE",
-        headers: authHeaders(),
-      });
+      const response = await apiFetch(`groups/${group.id}`, { method: "DELETE" });
 
       if (!response.ok) {
         throw new Error("Failed to delete group");

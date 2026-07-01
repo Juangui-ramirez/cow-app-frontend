@@ -5,8 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { useLanguage } from "../context/LanguageContext";
 import { PreferencesToggle } from "../components/PreferencesToggle";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { apiFetch } from "../utils/api";
 
 export function Register() {
   const navigate = useNavigate();
@@ -20,12 +19,9 @@ export function Register() {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${API_URL}users`, {
+      const response = await apiFetch("users", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, email, password }),
+        body: { name, email, password },
       });
       const data = await response.json();
       if (response.ok) {

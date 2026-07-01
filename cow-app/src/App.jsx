@@ -16,80 +16,80 @@ import { LanguageProvider } from "./context/LanguageContext";
 function App() {
   return (
     <ThemeProvider>
-    <LanguageProvider>
-    <div className="min-h-screen bg-white text-black dark:bg-gray-900 dark:text-gray-100 transition-colors">
-    <BrowserRouter>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <Login /> <Footer />
-            </>
-          }
-        />
-        <Route
-          path="/register"
-          element={
-            <>
-              <Register /> <Footer />
-            </>
-          }
-        />
-        <Route
-          path="/unauthorized"
-          element={
-            <>
-              <Unauthorized /> <Footer />
-            </>
-          }
-        />
-        <Route element={<PrivateRoute />}>
-          <Route
-            path="/home"
-            element={
-              <HeaderAndFooter>
-                <Home />
-              </HeaderAndFooter>
-            }
-          />
-          <Route
-            path="/friends"
-            element={
-              <HeaderAndFooter>
-                <Friends />
-              </HeaderAndFooter>
-            }
-          />
-          <Route
-            path="/bills"
-            element={
-              <HeaderAndFooter>
-                <Bills />
-              </HeaderAndFooter>
-            }
-          />
-          <Route
-            path="/groups"
-            element={
-              <HeaderAndFooter>
-                <Groups />
-              </HeaderAndFooter>
-            }
-          />
-          <Route
-            path="/groups/:groupName"
-            element={
-              <HeaderAndFooter>
-                <GroupDetails />
-              </HeaderAndFooter>
-            }
-          />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-    </div>
-    </LanguageProvider>
+      <LanguageProvider>
+        <div className="min-h-screen bg-white text-black dark:bg-gray-900 dark:text-gray-100 transition-colors">
+          <BrowserRouter>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <>
+                    <Login /> <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="/register"
+                element={
+                  <>
+                    <Register /> <Footer />
+                  </>
+                }
+              />
+              <Route
+                path="/unauthorized"
+                element={
+                  <>
+                    <Unauthorized /> <Footer />
+                  </>
+                }
+              />
+              <Route element={<PrivateRoute />}>
+                <Route
+                  path="/home"
+                  element={
+                    <HeaderAndFooter>
+                      <Home />
+                    </HeaderAndFooter>
+                  }
+                />
+                <Route
+                  path="/friends"
+                  element={
+                    <HeaderAndFooter>
+                      <Friends />
+                    </HeaderAndFooter>
+                  }
+                />
+                <Route
+                  path="/bills"
+                  element={
+                    <HeaderAndFooter>
+                      <Bills />
+                    </HeaderAndFooter>
+                  }
+                />
+                <Route
+                  path="/groups"
+                  element={
+                    <HeaderAndFooter>
+                      <Groups />
+                    </HeaderAndFooter>
+                  }
+                />
+                <Route
+                  path="/groups/:groupName"
+                  element={
+                    <HeaderAndFooter>
+                      <GroupDetails />
+                    </HeaderAndFooter>
+                  }
+                />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </div>
+      </LanguageProvider>
     </ThemeProvider>
   );
 }

@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "../components/Button";
 import { useLanguage } from "../context/LanguageContext";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { apiFetch } from "../utils/api";
 
 export const Friends = () => {
   const { t } = useLanguage();
@@ -11,15 +10,9 @@ export const Friends = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
 
-  const authHeaders = () => ({
-    Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-  });
-
   const fetchFriends = async () => {
     try {
-      const response = await fetch(`${API_URL}friends`, {
-        headers: authHeaders(),
-      });
+      const response = await apiFetch("friends");
       if (!response.ok) {
         throw new Error("Failed to fetch friends");
       }
@@ -31,9 +24,7 @@ export const Friends = () => {
 
   const fetchPending = async () => {
     try {
-      const response = await fetch(`${API_URL}friends?status=pending`, {
-        headers: authHeaders(),
-      });
+      const response = await apiFetch("friends?status=pending");
       if (!response.ok) {
         throw new Error("Failed to fetch friend requests");
       }
@@ -56,14 +47,7 @@ export const Friends = () => {
     e.preventDefault();
     setMessage("");
     try {
-      const response = await fetch(`${API_URL}friends`, {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-          ...authHeaders(),
-        },
-        body: JSON.stringify({ email }),
-      });
+      const response = await apiFetch("friends", { method: "POST", body: { email } });
       const data = await response.json();
       if (!response.ok) {
         throw new Error(data.message || "Failed to send friend request");
@@ -78,10 +62,7 @@ export const Friends = () => {
 
   const handleAccept = async (id) => {
     try {
-      const response = await fetch(`${API_URL}friends/${id}/accept`, {
-        method: "PUT",
-        headers: authHeaders(),
-      });
+      const response = await apiFetch(`friends/${id}/accept`, { method: "PUT" });
       if (!response.ok) {
         throw new Error("Failed to accept friend request");
       }
@@ -93,10 +74,7 @@ export const Friends = () => {
 
   const handleReject = async (id) => {
     try {
-      const response = await fetch(`${API_URL}friends/${id}`, {
-        method: "DELETE",
-        headers: authHeaders(),
-      });
+      const response = await apiFetch(`friends/${id}`, { method: "DELETE" });
       if (!response.ok) {
         throw new Error("Failed to remove friend request");
       }
