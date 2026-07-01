@@ -19,8 +19,18 @@ export const GroupCardDetail = ({
   const [showFriendForm, setShowFriendForm] = useState(false);
   const [billDescription, setBillDescription] = useState("");
   const [billAmount, setBillAmount] = useState("");
+  const [splitMode, setSplitMode] = useState("equal");
+  const [customAmounts, setCustomAmounts] = useState({});
   const [friendEmail, setFriendEmail] = useState("");
   const [error, setError] = useState("");
+
+  const otherMembers = members.filter((member) => member.userId !== currentUserId);
+  const billAmountNumber = Number(billAmount) || 0;
+  const customTotal = Object.values(customAmounts).reduce(
+    (total, value) => total + (Number(value) || 0),
+    0
+  );
+  const customRemaining = billAmountNumber - customTotal;
 
   const date = new Date(createdat);
   const formattedDate = date.toLocaleDateString("en-GB", {
@@ -34,6 +44,10 @@ export const GroupCardDetail = ({
     .filter((split) => split.userId === currentUserId && !split.settled)
     .reduce((total, split) => total + Number(split.amountOwed), 0);
 
+  const handleCustomAmountChange = (userId, value) => {
+    setCustomAmounts((prev) => ({ ...prev, [userId]: value }));
+  };
+
   const handleSubmitBill = async (e) => {
     e.preventDefault();
     setError("");
@@ -41,10 +55,27 @@ export const GroupCardDetail = ({
       setError("Description and amount are required");
       return;
     }
+
+    let splits;
+    if (splitMode === "custom") {
+      if (Math.abs(customRemaining) > 0.01) {
+        setError("The amounts must add up to the total bill amount");
+        return;
+      }
+      splits = otherMembers
+        .map((member) => ({
+          userId: member.userId,
+          amountOwed: Number(customAmounts[member.userId]) || 0,
+        }))
+        .filter((split) => split.amountOwed > 0);
+    }
+
     try {
-      await onAddBill(billDescription.trim(), Number(billAmount));
+      await onAddBill(billDescription.trim(), billAmountNumber, splits);
       setBillDescription("");
       setBillAmount("");
+      setSplitMode("equal");
+      setCustomAmounts({});
       setShowBillForm(false);
     } catch (error) {
       setError(error.message);
@@ -116,6 +147,54 @@ export const GroupCardDetail = ({
             value={billAmount}
             onChange={(e) => setBillAmount(e.target.value)}
           />
+
+          <div className="flex gap-4 text-sm font-semibold">
+            <label className="flex items-center gap-1">
+              <input
+                type="radio"
+                name="splitMode"
+                checked={splitMode === "equal"}
+                onChange={() => setSplitMode("equal")}
+              />
+              Split equally
+            </label>
+            <label className="flex items-center gap-1">
+              <input
+                type="radio"
+                name="splitMode"
+                checked={splitMode === "custom"}
+                onChange={() => setSplitMode("custom")}
+              />
+              Split by amount
+            </label>
+          </div>
+
+          {splitMode === "custom" && (
+            <div className="flex flex-col gap-2 border rounded p-3">
+              {otherMembers.length === 0 ? (
+                <p className="text-sm">No other members to split with.</p>
+              ) : (
+                otherMembers.map((member) => (
+                  <div key={member.userId} className="flex justify-between items-center gap-2">
+                    <span className="text-sm">{member.name}</span>
+                    <input
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      placeholder="0"
+                      className="border rounded py-1 px-2 w-28"
+                      value={customAmounts[member.userId] ?? ""}
+                      onChange={(e) => handleCustomAmountChange(member.userId, e.target.value)}
+                    />
+                  </div>
+                ))
+              )}
+              <p className="text-sm font-semibold">
+                Remaining to assign: {formatCOP(customRemaining)}
+              </p>
+            </div>
+          )}
+
           <button
             type="submit"
             className="bg-brownppal text-white font-medium rounded-md h-[40px] w-full"

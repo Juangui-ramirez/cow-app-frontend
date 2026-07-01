@@ -78,14 +78,14 @@ export const GroupDetails = () => {
 
   // Note: these two intentionally let errors propagate (no try/catch) so
   // GroupCardDetail's submit handlers can show the failure to the user.
-  const handleAddBill = async (description, amount) => {
+  const handleAddBill = async (description, amount, splits) => {
     const response = await fetch(`${API_URL}bills`, {
       method: "POST",
       headers: {
         "Content-type": "application/json",
         ...authHeaders(),
       },
-      body: JSON.stringify({ groupId: group.id, description, amount }),
+      body: JSON.stringify({ groupId: group.id, description, amount, splits }),
     });
 
     if (!response.ok) {
